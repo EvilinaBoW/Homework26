@@ -1,0 +1,268 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp13
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Условные операторы");
+                Console.WriteLine("1.  Проверка чётности числа");
+                Console.WriteLine("2.  Максимум из трёх чисел");
+                Console.WriteLine("3.  Калькулятор с выбором операции");
+                Console.WriteLine("4.  Високосный год");
+                Console.WriteLine("5.  Оценка по баллам (A-F)");
+                Console.WriteLine("6.  Время суток");
+                Console.WriteLine("7.  Тип треугольника");
+                Console.WriteLine("8.  Проверка возраста");
+                Console.WriteLine("9.  Квадратное уравнение");
+                Console.WriteLine("10. Калькулятор скидок");
+                Console.WriteLine("11. Название месяца по номеру");
+                Console.WriteLine("12. Проверка надёжности пароля");
+                Console.WriteLine("0   Выход");
+                Console.Write("\nВыберите задание (0-12): ");
+
+                if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 0 || choice > 12)
+                {
+                    Console.WriteLine("Неверный ввод!");
+                    Pause();
+                    continue;
+                }
+
+                if (choice == 0) break;
+
+                Console.Clear();
+                ExecuteTask(choice);
+                Pause();
+            }
+        }
+
+        static void ExecuteTask(int task)
+        {
+            switch (task)
+            {
+                case 1:
+                    Console.Write("Введите число: ");
+                    int n = int.Parse(Console.ReadLine());
+                    Console.WriteLine(n % 2 == 0 ? "Чётное" : "Нечётное");
+                    break;
+
+                case 2:
+                    Console.Write("Введите три числа через пробел: ");
+                    string[] abc = Console.ReadLine().Split();
+                    int a1 = int.Parse(abc[0]), b1 = int.Parse(abc[1]), c1 = int.Parse(abc[2]);
+                    int max = a1;
+                    if (b1 > max) max = b1;
+                    if (c1 > max) max = c1;
+                    Console.WriteLine($"Максимум = {max}");
+                    break;
+
+                case 3:
+                    Console.Write("Введите первое число: ");
+                    double x1 = double.Parse(Console.ReadLine());
+                    Console.Write("Введите второе число: ");
+                    double y1 = double.Parse(Console.ReadLine());
+                    Console.Write("Выберите операцию: + - * / ");
+                    char op = Console.ReadKey().KeyChar;
+                    Console.WriteLine();
+
+                    double result = 0;
+                    bool error = false;
+
+                    switch (op)
+                    {
+                        case '+':
+                            result = x1 + y1;
+                            break;
+                        case '-':
+                            result = x1 - y1;
+                            break;
+                        case '*':
+                            result = x1 * y1;
+                            break;
+                        case '/':
+                            if (y1 != 0)
+                                result = x1 / y1;
+                            else
+                                error = true;
+                            break;
+                        default:
+                            error = true;
+                            break;
+                    }
+
+                    if (error)
+                        Console.WriteLine("Ошибка: неверная операция или деление на 0");
+                    else
+                        Console.WriteLine($"Результат: {result}");
+                    break;
+
+                case 4:
+                    Console.Write("Введите год: ");
+                    int year = int.Parse(Console.ReadLine());
+                    bool isLeap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+                    Console.WriteLine(isLeap ? "Високосный год" : "Обычный год");
+                    break;
+
+                case 5:
+                    Console.Write("Введите баллы (0-100): ");
+                    int score = int.Parse(Console.ReadLine());
+                    string grade;
+                    if (score >= 90) grade = "A";
+                    else if (score >= 80) grade = "B";
+                    else if (score >= 70) grade = "C";
+                    else if (score >= 60) grade = "D";
+                    else grade = "F";
+                    Console.WriteLine($"Оценка: {grade}");
+                    break;
+
+                case 6:
+                    Console.Write("Введите час (0-23): ");
+                    int hour = int.Parse(Console.ReadLine());
+                    string period;
+                    if (hour >= 5 && hour < 12) period = "Утро";
+                    else if (hour >= 12 && hour < 17) period = "День";
+                    else if (hour >= 17 && hour < 23) period = "Вечер";
+                    else period = "Ночь";
+                    Console.WriteLine(period);
+                    break;
+
+                case 7:
+                    Console.Write("Введите длины трёх сторон: ");
+                    string[] sides = Console.ReadLine().Split();
+                    double s1 = double.Parse(sides[0]), s2 = double.Parse(sides[1]), s3 = double.Parse(sides[2]);
+                    if (s1 + s2 <= s3 || s1 + s3 <= s2 || s2 + s3 <= s1)
+                        Console.WriteLine("Треугольник не существует");
+                    else if (s1 == s2 && s2 == s3)
+                        Console.WriteLine("Равносторонний");
+                    else if (s1 == s2 || s1 == s3 || s2 == s3)
+                        Console.WriteLine("Равнобедренный");
+                    else
+                        Console.WriteLine("Разносторонний");
+                    break;
+
+                case 8:
+                    Console.Write("Введите возраст: ");
+                    int age = int.Parse(Console.ReadLine());
+                    string category;
+                    if (age < 0) category = "Некорректный возраст";
+                    else if (age <= 12) category = "Ребёнок";
+                    else if (age <= 17) category = "Подросток";
+                    else if (age <= 64) category = "Взрослый";
+                    else category = "Пожилой";
+                    Console.WriteLine(category);
+                    break;
+
+                case 9:
+                    Console.Write("Введите a, b, c квадратного уравнения ax² + bx + c = 0: ");
+                    string[] coeffs = Console.ReadLine().Split();
+                    double a = double.Parse(coeffs[0]), b = double.Parse(coeffs[1]), c = double.Parse(coeffs[2]);
+                    if (a == 0)
+                    {
+                        Console.WriteLine("Это не квадратное уравнение");
+                        break;
+                    }
+                    double d = b * b - 4 * a * c;
+                    if (d < 0)
+                        Console.WriteLine("Действительных корней нет");
+                    else if (d == 0)
+                        Console.WriteLine($"Один корень: x = {-b / (2 * a):F2}");
+                    else
+                    {
+                        double x11 = (-b + Math.Sqrt(d)) / (2 * a);
+                        double x22 = (-b - Math.Sqrt(d)) / (2 * a);
+                        Console.WriteLine($"Корни: x1 = {x11:F2}, x2 = {x22:F2}");
+                    }
+                    break;
+
+                case 10:
+                    Console.Write("Введите сумму покупки: ");
+                    double sum = double.Parse(Console.ReadLine());
+                    double discount;
+                    if (sum >= 10000) discount = 0.15;
+                    else if (sum >= 5000) discount = 0.10;
+                    else if (sum >= 1000) discount = 0.05;
+                    else discount = 0;
+                    double final = sum * (1 - discount);
+                    Console.WriteLine($"Скидка: {discount:p0}");
+                    Console.WriteLine($"К оплате: {final:F2}");
+                    break;
+
+                case 11:
+                    Console.Write("Введите номер месяца (1-12): ");
+                    int month = int.Parse(Console.ReadLine());
+                    string monthName;
+                    switch (month)
+                    {
+                        case 1: monthName = "Январь"; break;
+                        case 2: monthName = "Февраль"; break;
+                        case 3: monthName = "Март"; break;
+                        case 4: monthName = "Апрель"; break;
+                        case 5: monthName = "Май"; break;
+                        case 6: monthName = "Июнь"; break;
+                        case 7: monthName = "Июль"; break;
+                        case 8: monthName = "Август"; break;
+                        case 9: monthName = "Сентябрь"; break;
+                        case 10: monthName = "Октябрь"; break;
+                        case 11: monthName = "Ноябрь"; break;
+                        case 12: monthName = "Декабрь"; break;
+                        default: monthName = "Некорректный месяц"; break;
+                    }
+                    Console.WriteLine(monthName);
+                    break;
+
+                case 12:
+                    Console.Write("Введите пароль: ");
+                    string pass = Console.ReadLine();
+                    bool hasUpper = false, hasLower = false, hasDigit = false, hasSpecial = false;
+
+                    foreach (char ch in pass)
+                    {
+                        if (char.IsUpper(ch)) hasUpper = true;
+                        if (char.IsLower(ch)) hasLower = true;
+                        if (char.IsDigit(ch)) hasDigit = true;
+                        if ("!@#$%^&*()_+-=[]{}|;':,.<>?/".Contains(ch)) hasSpecial = true;
+                    }
+
+                    int strength = (hasUpper ? 1 : 0) + (hasLower ? 1 : 0) + (hasDigit ? 1 : 0) + (hasSpecial ? 1 : 0);
+                    if (pass.Length < 8) strength = 0;
+
+                    string verdict;
+                    switch (strength)
+                    {
+                        case 0:
+                        case 1:
+                            verdict = "Очень слабый";
+                            break;
+                        case 2:
+                            verdict = "Слабый";
+                            break;
+                        case 3:
+                            verdict = "Средний";
+                            break;
+                        case 4:
+                            verdict = "Сильный";
+                            break;
+                        default:
+                            verdict = "Неизвестный";
+                            break;
+                    }
+                    Console.WriteLine($"Надёжность пароля: {verdict}");
+                    break;
+            }
+        }
+
+        static void Pause()
+        {
+            Console.WriteLine("\nНажмите любую клавишу для возврата в меню...");
+            Console.ReadKey();
+        }
+    }
+}
