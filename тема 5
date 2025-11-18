@@ -1,0 +1,318 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp13
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Методы");
+                Console.WriteLine("1.  Метод для вычисления суммы");
+                Console.WriteLine("2.  Метод для проверки четности");
+                Console.WriteLine("3.  Метод для вычисления факториала");
+                Console.WriteLine("4.  Метод с параметрами по умолчанию");
+                Console.WriteLine("5.  Метод для поиска максимума");
+                Console.WriteLine("6.  Перегрузка методов");
+                Console.WriteLine("7.  Метод с параметром ref");
+                Console.WriteLine("8.  Метод с параметром out");
+                Console.WriteLine("9.  Метод для сортировки массива");
+                Console.WriteLine("10. Метод для проверки палиндрома");
+                Console.WriteLine("11. Метод с переменным числом параметров");
+                Console.WriteLine("0.  Выход");
+                Console.Write("\nВыберите задание (0-11): ");
+
+                if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 0 || choice > 11)
+                {
+                    Console.WriteLine("Неверный ввод!");
+                    Pause();
+                    continue;
+                }
+
+                if (choice == 0) break;
+
+                Console.Clear();
+                ExecuteTask(choice);
+                Pause();
+            }
+        }
+
+        static void ExecuteTask(int task)
+        {
+            Random random = new Random();
+
+            switch (task)
+            {
+                case 1:
+                    Console.Write("Введите первое число: ");
+                    int a1 = int.Parse(Console.ReadLine());
+                    Console.Write("Введите второе число: ");
+                    int b1 = int.Parse(Console.ReadLine());
+
+                    int result1 = CalculateSum(a1, b1);
+                    Console.WriteLine($"Сумма {a1} + {b1} = {result1}");
+                    break;
+
+                case 2:
+                    Console.Write("Введите число: ");
+                    int number2 = int.Parse(Console.ReadLine());
+
+                    bool isEven = IsEven(number2);
+                    Console.WriteLine($"Число {number2} является {(isEven ? "четным" : "нечетным")}");
+                    break;
+
+                case 3:
+                    Console.Write("Введите число для вычисления факториала: ");
+                    int n3 = int.Parse(Console.ReadLine());
+
+                    long factorial = CalculateFactorial(n3);
+                    Console.WriteLine($"{n3}! = {factorial}");
+                    break;
+
+                case 4:
+                    Console.WriteLine("Вызов метода с разным количеством параметров:");
+
+                    double result4a = CalculatePower(2);  
+                    double result4b = CalculatePower(2, 3);  
+                    double result4c = CalculatePower(3, 4);   
+
+                    Console.WriteLine($"CalculatePower(2) = {result4a}");
+                    Console.WriteLine($"CalculatePower(2, 3) = {result4b}");
+                    Console.WriteLine($"CalculatePower(3, 4) = {result4c}");
+                    break;
+
+                case 5:
+                    int[] array5 = new int[8];
+                    Console.WriteLine("Массив:");
+                    for (int i = 0; i < array5.Length; i++)
+                    {
+                        array5[i] = random.Next(1, 101);
+                        Console.Write(array5[i] + " ");
+                    }
+
+                    int max = FindMax(array5);
+                    Console.WriteLine($"\nМаксимальный элемент: {max}");
+                    break;
+
+                case 6:
+                    Console.WriteLine("Перегрузка методов вычисления площади:");
+
+                    double squareArea = CalculateArea(5.0);           
+                    double rectangleArea = CalculateArea(4.0, 6.0);   
+                    double circleArea = CalculateArea(3.0, true);     
+
+                    Console.WriteLine($"Площадь квадрата со стороной 5: {squareArea:F2}");
+                    Console.WriteLine($"Площадь прямоугольника 4x6: {rectangleArea:F2}");
+                    Console.WriteLine($"Площадь круга с радиусом 3: {circleArea:F2}");
+                    break;
+
+                case 7:
+                    Console.Write("Введите значение x: ");
+                    int x7 = int.Parse(Console.ReadLine());
+                    Console.Write("Введите значение y: ");
+                    int y7 = int.Parse(Console.ReadLine());
+
+                    Console.WriteLine($"До обмена: x = {x7}, y = {y7}");
+                    Swap(ref x7, ref y7);
+                    Console.WriteLine($"После обмена: x = {x7}, y = {y7}");
+                    break;
+
+                case 8:
+                    Console.Write("Введите число: ");
+                    string input8 = Console.ReadLine();
+
+                    if (TryParsePositive(input8, out int positiveNumber))
+                    {
+                        Console.WriteLine($"Успешно преобразовано: {positiveNumber}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка: введено не положительное число");
+                    }
+                    break;
+
+                case 9:
+                    int[] array9 = new int[10];
+                    Console.WriteLine("Исходный массив:");
+                    for (int i = 0; i < array9.Length; i++)
+                    {
+                        array9[i] = random.Next(1, 51);
+                        Console.Write(array9[i] + " ");
+                    }
+
+                    SortArray(array9);
+
+                    Console.WriteLine("\nОтсортированный массив:");
+                    foreach (int num in array9)
+                    {
+                        Console.Write(num + " ");
+                    }
+                    break;
+
+                case 10:
+                    Console.Write("Введите строку для проверки: ");
+                    string text = Console.ReadLine();
+
+                    bool isPalindrome = IsPalindrome(text);
+                    Console.WriteLine($"Строка \"{text}\" {(isPalindrome ? "является" : "не является")} палиндромом");
+                    break;
+
+                case 11:
+                    int sum11 = CalculateSumParams(1, 2, 3, 4, 5);
+                    int sum12 = CalculateSumParams(10, 20);
+                    int sum13 = CalculateSumParams(1, 2, 3);
+
+                    Console.WriteLine("Суммы с переменным числом параметров:");
+                    Console.WriteLine($"1+2+3+4+5 = {sum11}");
+                    Console.WriteLine($"10+20 = {sum12}");
+                    Console.WriteLine($"1+2+3 = {sum13}");
+                    break;
+            }
+            Console.WriteLine();
+        }
+
+        // Метод для задания 1
+        static int CalculateSum(int a, int b)
+        {
+            return a + b;
+        }
+
+        // Метод для задания 2
+        static bool IsEven(int number)
+        {
+            return number % 2 == 0;
+        }
+
+        // Метод для задания 3 
+        static long CalculateFactorial(int n)
+        {
+            if (n < 0) return -1;
+            if (n == 0 || n == 1) return 1;
+
+            long result = 1;
+            for (int i = 2; i <= n; i++)
+            {
+                result *= i;
+            }
+            return result;
+        }
+
+        // Метод для задания 4
+        static double CalculatePower(double baseNumber, int exponent = 2)
+        {
+            return Math.Pow(baseNumber, exponent);
+        }
+
+        // Метод для задания 5
+        static int FindMax(int[] array)
+        {
+            if (array == null || array.Length == 0)
+                return 0;
+
+            int max = array[0];
+            for (int i = 1; i < array.Length; i++)
+            {
+                if (array[i] > max)
+                    max = array[i];
+            }
+            return max;
+        }
+
+        // Перегруженные методы для задания 6
+        static double CalculateArea(double side)
+        {
+            return side * side; 
+        }
+
+        static double CalculateArea(double length, double width)
+        {
+            return length * width;
+        }
+
+        static double CalculateArea(double radius, bool isCircle)
+        {
+            return Math.PI * radius * radius;
+        }
+
+        // Метод для задания 7
+        static void Swap(ref int a, ref int b)
+        {
+            int temp = a;
+            a = b;
+            b = temp;
+        }
+
+        // Метод для задания 8
+        static bool TryParsePositive(string input, out int result)
+        {
+            if (int.TryParse(input, out result) && result > 0)
+            {
+                return true;
+            }
+            result = 0;
+            return false;
+        }
+
+        // Метод для задания 9
+        static void SortArray(int[] array)
+        {
+            if (array == null) return;
+
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                for (int j = 0; j < array.Length - 1 - i; j++)
+                {
+                    if (array[j] > array[j + 1])
+                    {
+                        int temp = array[j];
+                        array[j] = array[j + 1];
+                        array[j + 1] = temp;
+                    }
+                }
+            }
+        }
+
+        // Метод для задания 10
+        static bool IsPalindrome(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return false;
+
+            string cleaned = new string(text.ToLower().Where(c => char.IsLetterOrDigit(c)).ToArray());
+            int left = 0;
+            int right = cleaned.Length - 1;
+
+            while (left < right)
+            {
+                if (cleaned[left] != cleaned[right])
+                    return false;
+                left++;
+                right--;
+            }
+            return true;
+        }
+
+        // Метод для задания 11
+        static int CalculateSumParams(params int[] numbers)
+        {
+            int sum = 0;
+            foreach (int num in numbers)
+            {
+                sum += num;
+            }
+            return sum;
+        }
+
+        static void Pause()
+        {
+            Console.WriteLine("\nНажмите любую клавишу для возврата в меню...");
+            Console.ReadKey();
+        }
+    }
+}
