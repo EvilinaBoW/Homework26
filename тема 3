@@ -1,0 +1,254 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp13
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Циклы");
+                Console.WriteLine("1.  Вывод чисел от 1 до N");
+                Console.WriteLine("2.  Сумма чисел от 1 до N");
+                Console.WriteLine("3.  Таблица умножения");
+                Console.WriteLine("4.  Факториал числа");
+                Console.WriteLine("5.  Числа Фибоначчи");
+                Console.WriteLine("6.  Проверка на простое число");
+                Console.WriteLine("7.  Переворот числа");
+                Console.WriteLine("8.  Сумма цифр числа");
+                Console.WriteLine("9.  Вывод простых чисел");
+                Console.WriteLine("10. Угадай число");
+                Console.WriteLine("11. Пирамида из звездочек");
+                Console.WriteLine("12. НОД двух чисел");
+                Console.WriteLine("0.  Выход");
+                Console.Write("\nВыберите задание (0-12): ");
+
+                if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 0 || choice > 12)
+                {
+                    Console.WriteLine("Неверный ввод!");
+                    Pause();
+                    continue;
+                }
+
+                if (choice == 0) break;
+
+                Console.Clear();
+                ExecuteTask(choice);
+                Pause();
+            }
+        }
+
+        static void ExecuteTask(int task)
+        {
+            switch (task)
+            {
+                case 1:
+                    Console.Write("Введите N: ");
+                    int n1 = int.Parse(Console.ReadLine());
+                    Console.WriteLine($"Числа от 1 до {n1}:");
+                    for (int i = 1; i <= n1; i++)
+                    {
+                        Console.Write(i + " ");
+                    }
+                    break;
+
+                case 2:
+                    Console.Write("Введите N: ");
+                    int n2 = int.Parse(Console.ReadLine());
+                    int sum2 = 0;
+                    for (int i = 1; i <= n2; i++)
+                    {
+                        sum2 += i;
+                    }
+                    Console.WriteLine($"Сумма чисел от 1 до {n2} = {sum2}");
+                    break;
+
+                case 3:
+                    Console.WriteLine("Таблица умножения:");
+                    for (int i = 1; i <= 10; i++)
+                    {
+                        for (int j = 1; j <= 10; j++)
+                        {
+                            Console.Write($"{i} * {j} = {i * j}\t");
+                        }
+                        Console.WriteLine();
+                    }
+                    break;
+
+                case 4:
+                    Console.Write("Введите число: ");
+                    int n4 = int.Parse(Console.ReadLine());
+                    long factorial = 1;
+                    for (int i = 1; i <= n4; i++)
+                    {
+                        factorial *= i;
+                    }
+                    Console.WriteLine($"{n4}! = {factorial}");
+                    break;
+
+                case 5:
+                    Console.Write("Введите количество чисел Фибоначчи: ");
+                    int n5 = int.Parse(Console.ReadLine());
+                    Console.WriteLine($"Первые {n5} чисел Фибоначчи:");
+                    long a = 0, b = 1;
+                    for (int i = 0; i < n5; i++)
+                    {
+                        Console.Write(a + " ");
+                        long temp = a + b;
+                        a = b;
+                        b = temp;
+                    }
+                    break;
+
+                case 6:
+                    Console.Write("Введите число: ");
+                    int n6 = int.Parse(Console.ReadLine());
+                    bool isPrime = true;
+
+                    if (n6 <= 1)
+                        isPrime = false;
+                    else
+                    {
+                        for (int i = 2; i <= Math.Sqrt(n6); i++)
+                        {
+                            if (n6 % i == 0)
+                            {
+                                isPrime = false;
+                                break;
+                            }
+                        }
+                    }
+                    Console.WriteLine(isPrime ? $"{n6} - простое число" : $"{n6} - составное число");
+                    break;
+
+                case 7:
+                    Console.Write("Введите число: ");
+                    int n7 = int.Parse(Console.ReadLine());
+                    int reversed = 0;
+                    int original = n7;
+
+                    while (n7 > 0)
+                    {
+                        int digit = n7 % 10;
+                        reversed = reversed * 10 + digit;
+                        n7 /= 10;
+                    }
+                    Console.WriteLine($"Перевернутое число: {reversed}");
+                    break;
+
+                case 8:
+                    Console.Write("Введите число: ");
+                    int n8 = int.Parse(Console.ReadLine());
+                    int sumDigits = 0;
+                    int temp8 = Math.Abs(n8);
+
+                    while (temp8 > 0)
+                    {
+                        sumDigits += temp8 % 10;
+                        temp8 /= 10;
+                    }
+                    Console.WriteLine($"Сумма цифр числа {n8} = {sumDigits}");
+                    break;
+
+                case 9:
+                    Console.Write("Введите предел для поиска простых чисел: ");
+                    int limit = int.Parse(Console.ReadLine());
+                    Console.WriteLine($"Простые числа до {limit}:");
+
+                    for (int i = 2; i <= limit; i++)
+                    {
+                        bool isCurrentPrime = true;
+                        for (int j = 2; j <= Math.Sqrt(i); j++)
+                        {
+                            if (i % j == 0)
+                            {
+                                isCurrentPrime = false;
+                                break;
+                            }
+                        }
+                        if (isCurrentPrime)
+                            Console.Write(i + " ");
+                    }
+                    break;
+
+                case 10:
+                    Random random = new Random();
+                    int secretNumber = random.Next(1, 101);
+                    int attempts = 0;
+                    Console.WriteLine("Угадайте число от 1 до 100!");
+
+                    while (true)
+                    {
+                        Console.Write("Ваша попытка: ");
+                        int guess = int.Parse(Console.ReadLine());
+                        attempts++;
+
+                        if (guess == secretNumber)
+                        {
+                            Console.WriteLine($"Поздравляем! Вы угадали число {secretNumber} за {attempts} попыток.");
+                            break;
+                        }
+                        else if (guess < secretNumber)
+                        {
+                            Console.WriteLine("Загаданное число БОЛЬШЕ");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Загаданное число МЕНЬШЕ");
+                        }
+                    }
+                    break;
+
+                case 11:
+                    Console.Write("Введите высоту пирамиды: ");
+                    int height = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Пирамида:");
+
+                    for (int i = 1; i <= height; i++)
+                    {
+                        for (int j = 0; j < height - i; j++)
+                        {
+                            Console.Write(" ");
+                        }
+                        for (int k = 0; k < 2 * i - 1; k++)
+                        {
+                            Console.Write("*");
+                        }
+                        Console.WriteLine();
+                    }
+                    break;
+
+                case 12:
+                    Console.Write("Введите первое число: ");
+                    int num1 = int.Parse(Console.ReadLine());
+                    Console.Write("Введите второе число: ");
+                    int num2 = int.Parse(Console.ReadLine());
+
+                    int a12 = Math.Abs(num1);
+                    int b12 = Math.Abs(num2);
+
+                    while (b12 != 0)
+                    {
+                        int temp = b12;
+                        b12 = a12 % b12;
+                        a12 = temp;
+                    }
+                    Console.WriteLine($"НОД({num1}, {num2}) = {a12}");
+                    break;
+            }
+            Console.WriteLine();
+        }
+
+        static void Pause()
+        {
+            Console.WriteLine("\nНажмите любую клавишу для возврата в меню...");
+            Console.ReadKey();
+        }
+    }
+}
