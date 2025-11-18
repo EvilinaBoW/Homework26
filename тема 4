@@ -1,0 +1,353 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp13
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Массивы");
+                Console.WriteLine("1.  Заполнение и вывод массива");
+                Console.WriteLine("2.  Сумма элементов массива");
+                Console.WriteLine("3.  Поиск максимального элемента");
+                Console.WriteLine("4.  Переворот массива");
+                Console.WriteLine("5.  Поиск элемента в массиве");
+                Console.WriteLine("6.  Подсчет четных и нечетных");
+                Console.WriteLine("7.  Сортировка пузырьком");
+                Console.WriteLine("8.  Двумерный массив (матрица)");
+                Console.WriteLine("9.  Сумма элементов по диагонали");
+                Console.WriteLine("10. Зубчатый массив");
+                Console.WriteLine("11. Транспонирование матрицы");
+                Console.WriteLine("12. Объединение двух массивов");
+                Console.WriteLine("0.  Выход");
+                Console.Write("\nВыберите задание (0-12): ");
+
+                if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 0 || choice > 12)
+                {
+                    Console.WriteLine("Неверный ввод!");
+                    Pause();
+                    continue;
+                }
+
+                if (choice == 0) break;
+
+                Console.Clear();
+                ExecuteTask(choice);
+                Pause();
+            }
+        }
+
+        static void ExecuteTask(int task)
+        {
+            Random random = new Random();
+
+            switch (task)
+            {
+                case 1:
+                    Console.Write("Введите размер массива: ");
+                    int size1 = int.Parse(Console.ReadLine());
+                    int[] arr1 = new int[size1];
+
+                    for (int i = 0; i < size1; i++)
+                    {
+                        arr1[i] = random.Next(1, 101);
+                    }
+
+                    Console.WriteLine("Массив:");
+                    for (int i = 0; i < size1; i++)
+                    {
+                        Console.Write(arr1[i] + " ");
+                    }
+                    break;
+
+                case 2:
+                    int[] arr2 = new int[10];
+                    Console.WriteLine("Массив:");
+                    for (int i = 0; i < arr2.Length; i++)
+                    {
+                        arr2[i] = random.Next(1, 21);
+                        Console.Write(arr2[i] + " ");
+                    }
+
+                    int sum = 0;
+                    foreach (int num in arr2)
+                    {
+                        sum += num;
+                    }
+                    Console.WriteLine($"\nСумма элементов: {sum}");
+                    break;
+
+                case 3:
+                    int[] arr3 = new int[8];
+                    Console.WriteLine("Массив:");
+                    for (int i = 0; i < arr3.Length; i++)
+                    {
+                        arr3[i] = random.Next(1, 51);
+                        Console.Write(arr3[i] + " ");
+                    }
+
+                    int max = arr3[0];
+                    int maxIndex = 0;
+                    for (int i = 1; i < arr3.Length; i++)
+                    {
+                        if (arr3[i] > max)
+                        {
+                            max = arr3[i];
+                            maxIndex = i;
+                        }
+                    }
+                    Console.WriteLine($"\nМаксимальный элемент: {max} (индекс {maxIndex})");
+                    break;
+
+                case 4:
+                    int[] arr4 = new int[7];
+                    Console.WriteLine("Исходный массив:");
+                    for (int i = 0; i < arr4.Length; i++)
+                    {
+                        arr4[i] = random.Next(1, 31);
+                        Console.Write(arr4[i] + " ");
+                    }
+
+                    for (int i = 0; i < arr4.Length / 2; i++)
+                    {
+                        int temp = arr4[i];
+                        arr4[i] = arr4[arr4.Length - 1 - i];
+                        arr4[arr4.Length - 1 - i] = temp;
+                    }
+
+                    Console.WriteLine("\nПеревернутый массив:");
+                    foreach (int num in arr4)
+                    {
+                        Console.Write(num + " ");
+                    }
+                    break;
+
+                case 5:
+                    int[] arr5 = new int[10];
+                    Console.WriteLine("Массив:");
+                    for (int i = 0; i < arr5.Length; i++)
+                    {
+                        arr5[i] = random.Next(1, 16);
+                        Console.Write(arr5[i] + " ");
+                    }
+
+                    Console.Write("\nВведите элемент для поиска: ");
+                    int search = int.Parse(Console.ReadLine());
+                    bool found = false;
+                    int foundIndex = -1;
+
+                    for (int i = 0; i < arr5.Length; i++)
+                    {
+                        if (arr5[i] == search)
+                        {
+                            found = true;
+                            foundIndex = i;
+                            break;
+                        }
+                    }
+
+                    if (found)
+                        Console.WriteLine($"Элемент {search} найден на позиции {foundIndex}");
+                    else
+                        Console.WriteLine($"Элемент {search} не найден");
+                    break;
+
+                case 6:
+                    int[] arr6 = new int[12];
+                    Console.WriteLine("Массив:");
+                    for (int i = 0; i < arr6.Length; i++)
+                    {
+                        arr6[i] = random.Next(1, 101);
+                        Console.Write(arr6[i] + " ");
+                    }
+
+                    int evenCount = 0, oddCount = 0;
+                    foreach (int num in arr6)
+                    {
+                        if (num % 2 == 0)
+                            evenCount++;
+                        else
+                            oddCount++;
+                    }
+
+                    Console.WriteLine($"\nЧетных: {evenCount}, Нечетных: {oddCount}");
+                    break;
+
+                case 7:
+                    int[] arr7 = new int[8];
+                    Console.WriteLine("Исходный массив:");
+                    for (int i = 0; i < arr7.Length; i++)
+                    {
+                        arr7[i] = random.Next(1, 41);
+                        Console.Write(arr7[i] + " ");
+                    }
+
+                    for (int i = 0; i < arr7.Length - 1; i++)
+                    {
+                        for (int j = 0; j < arr7.Length - 1 - i; j++)
+                        {
+                            if (arr7[j] > arr7[j + 1])
+                            {
+                                int temp = arr7[j];
+                                arr7[j] = arr7[j + 1];
+                                arr7[j + 1] = temp;
+                            }
+                        }
+                    }
+
+                    Console.WriteLine("\nОтсортированный массив:");
+                    foreach (int num in arr7)
+                    {
+                        Console.Write(num + " ");
+                    }
+                    break;
+
+                case 8:
+                    int[,] matrix = new int[3, 4];
+                    Console.WriteLine("Двумерный массив 3x4:");
+
+                    for (int i = 0; i < matrix.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < matrix.GetLength(1); j++)
+                        {
+                            matrix[i, j] = random.Next(1, 21);
+                            Console.Write(matrix[i, j].ToString().PadLeft(3) + " ");
+                        }
+                        Console.WriteLine();
+                    }
+                    break;
+
+                case 9:
+                    int[,] squareMatrix = new int[4, 4];
+                    Console.WriteLine("Квадратная матрица 4x4:");
+
+                    for (int i = 0; i < squareMatrix.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < squareMatrix.GetLength(1); j++)
+                        {
+                            squareMatrix[i, j] = random.Next(1, 16);
+                            Console.Write(squareMatrix[i, j].ToString().PadLeft(3) + " ");
+                        }
+                        Console.WriteLine();
+                    }
+
+                    int mainDiagonalSum = 0;
+                    int secondaryDiagonalSum = 0;
+
+                    for (int i = 0; i < squareMatrix.GetLength(0); i++)
+                    {
+                        mainDiagonalSum += squareMatrix[i, i];
+                        secondaryDiagonalSum += squareMatrix[i, squareMatrix.GetLength(1) - 1 - i];
+                    }
+
+                    Console.WriteLine($"Сумма главной диагонали: {mainDiagonalSum}");
+                    Console.WriteLine($"Сумма побочной диагонали: {secondaryDiagonalSum}");
+                    break;
+
+                case 10:
+                    int[][] jaggedArray = new int[4][];
+
+                    for (int i = 0; i < jaggedArray.Length; i++)
+                    {
+                        jaggedArray[i] = new int[i + 2];
+                        for (int j = 0; j < jaggedArray[i].Length; j++)
+                        {
+                            jaggedArray[i][j] = random.Next(1, 11);
+                        }
+                    }
+
+                    Console.WriteLine("Зубчатый массив:");
+                    for (int i = 0; i < jaggedArray.Length; i++)
+                    {
+                        for (int j = 0; j < jaggedArray[i].Length; j++)
+                        {
+                            Console.Write(jaggedArray[i][j] + " ");
+                        }
+                        Console.WriteLine();
+                    }
+                    break;
+
+                case 11:
+                    int[,] originalMatrix = new int[3, 2];
+                    Console.WriteLine("Исходная матрица 3x2:");
+
+                    for (int i = 0; i < originalMatrix.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < originalMatrix.GetLength(1); j++)
+                        {
+                            originalMatrix[i, j] = random.Next(1, 16);
+                            Console.Write(originalMatrix[i, j].ToString().PadLeft(3) + " ");
+                        }
+                        Console.WriteLine();
+                    }
+
+                    // Транспонирование
+                    int[,] transposed = new int[originalMatrix.GetLength(1), originalMatrix.GetLength(0)];
+
+                    for (int i = 0; i < originalMatrix.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < originalMatrix.GetLength(1); j++)
+                        {
+                            transposed[j, i] = originalMatrix[i, j];
+                        }
+                    }
+
+                    Console.WriteLine("Транспонированная матрица 2x3:");
+                    for (int i = 0; i < transposed.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < transposed.GetLength(1); j++)
+                        {
+                            Console.Write(transposed[i, j].ToString().PadLeft(3) + " ");
+                        }
+                        Console.WriteLine();
+                    }
+                    break;
+
+                case 12:
+                    int[] array1 = new int[5];
+                    int[] array2 = new int[4];
+
+                    Console.WriteLine("Первый массив:");
+                    for (int i = 0; i < array1.Length; i++)
+                    {
+                        array1[i] = random.Next(1, 21);
+                        Console.Write(array1[i] + " ");
+                    }
+
+                    Console.WriteLine("\nВторой массив:");
+                    for (int i = 0; i < array2.Length; i++)
+                    {
+                        array2[i] = random.Next(1, 21);
+                        Console.Write(array2[i] + " ");
+                    }
+
+                    int[] merged = new int[array1.Length + array2.Length];
+                    Array.Copy(array1, merged, array1.Length);
+                    Array.Copy(array2, 0, merged, array1.Length, array2.Length);
+
+                    Array.Sort(merged);
+
+                    Console.WriteLine("\nОбъединенный отсортированный массив:");
+                    foreach (int num in merged)
+                    {
+                        Console.Write(num + " ");
+                    }
+                    break;
+            }
+            Console.WriteLine();
+        }
+
+        static void Pause()
+        {
+            Console.WriteLine("\nНажмите любую клавишу для возврата в меню...");
+            Console.ReadKey();
+        }
+    }
+}
