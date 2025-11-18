@@ -1,0 +1,167 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp13
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+                while (true)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Введение");
+                    Console.WriteLine("1. Hello, World!");
+                    Console.WriteLine("2. Калькулятор двух чисел");
+                    Console.WriteLine("3. Конвертер температур");
+                    Console.WriteLine("4. Площадь прямоугольника");
+                    Console.WriteLine("5. Остаток от деления");
+                    Console.WriteLine("6. Обмен значениями переменных");
+                    Console.WriteLine("7. Среднее арифметическое");
+                    Console.WriteLine("8. Площадь круга");
+                    Console.WriteLine("9. Возраст в секундах");
+                    Console.WriteLine("10. Конвертер валют");
+                    Console.WriteLine("0. Выход");
+                    Console.WriteLine("\nВыберите задание 1-10");
+
+                    if (!int.TryParse(Console.ReadLine(), out int choice))
+                    {
+                        Console.WriteLine("Некорректный ввод((");
+                        Pause();
+                        continue;
+                    }
+
+                    if (choice == 0) break;
+
+                    Console.Clear();
+                    ExecuteTask(choice);
+                    Pause();
+                }
+            }
+
+            static void ExecuteTask(int task)
+            {
+                switch (task)
+                {
+                    case 1:
+                        Console.WriteLine("Hello, World!");
+                        break;
+
+                    case 2:
+                        Console.WriteLine("Введите первое число");
+                        double a = double.Parse(Console.ReadLine());
+                        Console.WriteLine("Введите второе число");
+                        double b = double.Parse(Console.ReadLine());
+
+                        Console.WriteLine($"Сумма: {a + b}");
+                        Console.WriteLine($"Разность: {a - b}");
+                        Console.WriteLine($"Произведение: {a * b}");
+                        if (b != 0)
+                            Console.WriteLine($"Деление: {a / b}");
+                        else
+                            Console.WriteLine("Деление на ноль невозможно");
+                        break;
+
+                    case 3:
+                        Console.WriteLine("Введите температуру в Цельсиях");
+                        double c = double.Parse(Console.ReadLine());
+                        double f = c * 9.0 / 5.0 + 32;
+                        Console.WriteLine($"{c}°C = {f:F2}°F");
+                        break;
+
+                    case 4:
+                        Console.Write("Введите длину прямоугольника: ");
+                        double length = double.Parse(Console.ReadLine());
+                        Console.Write("Введите ширину прямоугольника: ");
+                        double width = double.Parse(Console.ReadLine());
+
+                        double area = length * width;
+                        double perimeter = 2 * (length + width);
+                        Console.WriteLine($"Площадь = {area}");
+                        Console.WriteLine($"Периметр = {perimeter}");
+                        break;
+
+                    case 5:
+                        Console.Write("Введите делимое: ");
+                        int x = int.Parse(Console.ReadLine());
+                        Console.Write("Введите делитель: ");
+                        int y = int.Parse(Console.ReadLine());
+
+                        if (y != 0)
+                            Console.WriteLine($"Остаток от деления {x} % {y} = {x % y}");
+                        else
+                            Console.WriteLine("Деление на ноль невозможно");
+                        break;
+
+                    case 6:
+                        Console.Write("Введите значение a: ");
+                        int a1 = int.Parse(Console.ReadLine());
+                        Console.Write("Введите значение b: ");
+                        int b1 = int.Parse(Console.ReadLine());
+
+                        Console.WriteLine($"Было: a = {a1}, b = {b1}");
+
+                        a1 = a1 + b1;
+                        b1 = a1 - b1;
+                        a1 = a1 - b1;
+
+                        Console.WriteLine($"Стало - a = {a1}, b = {b1}");
+                        break;
+
+                    case 7:
+                        Console.Write("Введите первое число: ");
+                        double num1 = double.Parse(Console.ReadLine());
+                        Console.Write("Введите второе число: ");
+                        double num2 = double.Parse(Console.ReadLine());
+                        Console.Write("Введите третье число: ");
+                        double num3 = double.Parse(Console.ReadLine());
+
+                        double average = (num1 + num2 + num3) / 3;
+                        Console.WriteLine($"Среднее арифметическое = {average:F2}");
+                        break;
+
+                    case 8:
+                        Console.Write("Введите радиус круга: ");
+                        double radius = double.Parse(Console.ReadLine());
+                        double circleArea = Math.PI * radius * radius;
+                        Console.WriteLine($"Площадь круга = {circleArea:F2}");
+                        break;
+
+                    case 9:
+                        Console.Write("Введите ваш возраст (лет): ");
+                        int years = int.Parse(Console.ReadLine());
+
+                        long seconds = years * 365L * 24 * 60 * 60;
+                        Console.WriteLine($"Вы прожили примерно {seconds} секунд");
+                        break;
+
+                    case 10:
+                        const double USD_RATE = 96.50;
+                        const double EUR_RATE = 103.20;
+
+                        Console.Write("Введите сумму в рублях: ");
+                        double rubles = double.Parse(Console.ReadLine());
+
+                        double usd = rubles / USD_RATE;
+                        double eur = rubles / EUR_RATE;
+
+                        Console.WriteLine($"{rubles:F2} RUB = {usd:F2} USD");
+                        Console.WriteLine($"{rubles:F2} RUB = {eur:F2} EUR");
+                        break;
+
+                    default:
+                        Console.WriteLine("Такого задания нет!");
+                        break;
+                }
+            }
+
+            static void Pause()
+            {
+                Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+                Console.ReadKey();
+            }
+        }
+    }
