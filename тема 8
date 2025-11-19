@@ -1,0 +1,427 @@
+using System;
+using System.Collections.Generic;
+
+namespace ConsoleApp13
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Тема 8: ООП");
+                Console.WriteLine("1.  Создание класса \"Студент\"");
+                Console.WriteLine("2.  Инкапсуляция - класс \"Банковский счет\"");
+                Console.WriteLine("3.  Наследование - иерархия \"Животные\"");
+                Console.WriteLine("4.  Конструкторы - класс \"Прямоугольник\"");
+                Console.WriteLine("5.  Статические члены класса");
+                Console.WriteLine("6.  Полиморфизм - геометрические фигуры");
+                Console.WriteLine("7.  Интерфейсы - сортируемые объекты");
+                Console.WriteLine("8.  Свойства (Properties) - класс \"Книга\"");
+                Console.WriteLine("9.  Перегрузка операторов");
+                Console.WriteLine("10. Композиция - класс \"Автомобиль\"");
+                Console.WriteLine("11. Индексаторы - класс \"Список покупок\"");
+                Console.WriteLine("12. Обработка исключений в классах");
+                Console.WriteLine("0.  Выход");
+                Console.Write("\nВыберите задание (0-12): ");
+
+                if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 0 || choice > 12)
+                {
+                    Console.WriteLine("Неверный ввод!");
+                    Pause();
+                    continue;
+                }
+
+                if (choice == 0) break;
+
+                Console.Clear();
+                ExecuteTask(choice);
+                Pause();
+            }
+        }
+
+        static void ExecuteTask(int task)
+        {
+            switch (task)
+            {
+                case 1:
+                    Student student1 = new Student("Иван", "Иванов", 20, "CS101");
+                    Student student2 = new Student("Петр", "Петров", 22, "MA202");
+                    student1.DisplayInfo();
+                    student2.DisplayInfo();
+                    break;
+
+                case 2:
+                    BankAccount account = new BankAccount("123456789", 1000);
+                    account.Deposit(500);
+                    account.Withdraw(200);
+                    account.Withdraw(2000);
+                    Console.WriteLine($"Баланс: {account.GetBalance()}");
+                    break;
+
+                case 3:
+                    Animal dog = new Dog("Бобик");
+                    Animal cat = new Cat("Мурзик");
+                    dog.MakeSound();
+                    cat.MakeSound();
+                    break;
+
+                case 4:
+                    Rectangle rect1 = new Rectangle();
+                    Rectangle rect2 = new Rectangle(10, 5);
+                    Rectangle rect3 = new Rectangle(7);
+                    Console.WriteLine($"Площадь 1: {rect1.GetArea()}");
+                    Console.WriteLine($"Площадь 2: {rect2.GetArea()}");
+                    Console.WriteLine($"Площадь 3: {rect3.GetArea()}");
+                    break;
+
+                case 5:
+                    Counter c1 = new Counter();
+                    Counter c2 = new Counter();
+                    c1.Increment();
+                    c2.Increment();
+                    c2.Increment();
+                    Console.WriteLine($"c1: {c1.GetCount()}, c2: {c2.GetCount()}");
+                    Console.WriteLine($"Всего создано объектов: {Counter.TotalCount}");
+                    break;
+
+                case 6:
+                    Shape circle = new Circle(5);
+                    Shape rectangle = new ShapeRectangle(4, 6);
+                    Console.WriteLine($"Площадь круга: {circle.CalculateArea():F2}");
+                    Console.WriteLine($"Площадь прямоугольника: {rectangle.CalculateArea():F2}");
+                    break;
+
+                case 7:
+                    List<Person> people = new List<Person>
+                    {
+                        new Person("Иван", 25),
+                        new Person("Петр", 20),
+                        new Person("Анна", 30)
+                    };
+                    people.Sort();
+                    foreach (var person in people)
+                    {
+                        Console.WriteLine($"{person.Name} - {person.Age} лет");
+                    }
+                    break;
+
+                case 8:
+                    Book book = new Book();
+                    book.Title = "Война и мир";
+                    book.Author = "Лев Толстой";
+                    book.Price = 1500;
+                    book.Price = -100;
+                    Console.WriteLine(book.GetBookInfo());
+                    break;
+
+                case 9:
+                    ComplexNumber num1 = new ComplexNumber(3, 4);
+                    ComplexNumber num2 = new ComplexNumber(1, 2);
+                    ComplexNumber sum = num1 + num2;
+                    ComplexNumber product = num1 * num2;
+                    Console.WriteLine($"Сумма: {sum}");
+                    Console.WriteLine($"Произведение: {product}");
+                    break;
+
+                case 10:
+                    Engine engine = new Engine(150);
+                    Car car = new Car("Toyota", "Camry", engine);
+                    car.Start();
+                    car.DisplayInfo();
+                    break;
+
+                case 11:
+                    ShoppingList list = new ShoppingList();
+                    list[0] = "Хлеб";
+                    list[1] = "Молоко";
+                    list[2] = "Яйца";
+                    for (int i = 0; i < 3; i++)
+                    {
+                        Console.WriteLine($"Позиция {i}: {list[i]}");
+                    }
+                    break;
+
+                case 12:
+                    Calculator calc = new Calculator();
+                    try
+                    {
+                        Console.WriteLine($"10 / 2 = {calc.Divide(10, 2)}");
+                        Console.WriteLine($"10 / 0 = {calc.Divide(10, 0)}");
+                    }
+                    catch (DivideByZeroException ex)
+                    {
+                        Console.WriteLine($"Ошибка: {ex.Message}");
+                    }
+                    break;
+            }
+            Console.WriteLine();
+        }
+
+        static void Pause()
+        {
+            Console.WriteLine("\nНажмите любую клавишу для возврата в меню...");
+            Console.ReadKey();
+        }
+    }
+
+    class Student
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int Age { get; set; }
+        public string Group { get; set; }
+
+        public Student(string firstName, string lastName, int age, string group)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Age = age;
+            Group = group;
+        }
+
+        public void DisplayInfo()
+        {
+            Console.WriteLine($"{FirstName} {LastName}, {Age} лет, группа {Group}");
+        }
+    }
+
+    class BankAccount
+    {
+        private string accountNumber;
+        private decimal balance;
+
+        public BankAccount(string accNumber, decimal initialBalance)
+        {
+            accountNumber = accNumber;
+            balance = initialBalance;
+        }
+
+        public void Deposit(decimal amount)
+        {
+            if (amount > 0)
+                balance += amount;
+        }
+
+        public void Withdraw(decimal amount)
+        {
+            if (amount > 0 && amount <= balance)
+                balance -= amount;
+            else
+                Console.WriteLine("Недостаточно средств");
+        }
+
+        public decimal GetBalance() => balance;
+    }
+
+    class Animal
+    {
+        protected string name;
+
+        public Animal(string name)
+        {
+            this.name = name;
+        }
+
+        public virtual void MakeSound()
+        {
+            Console.WriteLine($"{name} издает звук");
+        }
+    }
+
+    class Dog : Animal
+    {
+        public Dog(string name) : base(name) { }
+
+        public override void MakeSound()
+        {
+            Console.WriteLine($"{name} гавкает");
+        }
+    }
+
+    class Cat : Animal
+    {
+        public Cat(string name) : base(name) { }
+
+        public override void MakeSound()
+        {
+            Console.WriteLine($"{name} мяукает");
+        }
+    }
+
+    class Rectangle
+    {
+        private double width;
+        private double height;
+
+        public Rectangle() : this(1, 1) { }
+
+        public Rectangle(double side) : this(side, side) { }
+
+        public Rectangle(double w, double h)
+        {
+            width = w;
+            height = h;
+        }
+
+        public double GetArea() => width * height;
+    }
+
+    class Counter
+    {
+        private int count;
+        public static int TotalCount { get; private set; }
+
+        public Counter()
+        {
+            TotalCount++;
+        }
+
+        public void Increment() => count++;
+
+        public int GetCount() => count;
+    }
+
+    abstract class Shape
+    {
+        public abstract double CalculateArea();
+    }
+
+    class Circle : Shape
+    {
+        private double radius;
+
+        public Circle(double r) => radius = r;
+
+        public override double CalculateArea() => Math.PI * radius * radius;
+    }
+
+    class ShapeRectangle : Shape
+    {
+        private double width;
+        private double height;
+
+        public ShapeRectangle(double w, double h)
+        {
+            width = w;
+            height = h;
+        }
+
+        public override double CalculateArea() => width * height;
+    }
+
+    class Person : IComparable<Person>
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+
+        public Person(string name, int age)
+        {
+            Name = name;
+            Age = age;
+        }
+
+        public int CompareTo(Person other) => Age.CompareTo(other.Age);
+    }
+
+    class Book
+    {
+        private string title;
+        private string author;
+        private decimal price;
+
+        public string Title
+        {
+            get => title;
+            set => title = value;
+        }
+
+        public string Author
+        {
+            get => author;
+            set => author = value;
+        }
+
+        public decimal Price
+        {
+            get => price;
+            set
+            {
+                if (value >= 0)
+                    price = value;
+                else
+                    Console.WriteLine("Цена не может быть отрицательной");
+            }
+        }
+
+        public string GetBookInfo() => $"{title} - {author}, {price} руб.";
+    }
+
+    class ComplexNumber
+    {
+        public double Real { get; set; }
+        public double Imaginary { get; set; }
+
+        public ComplexNumber(double real, double imaginary)
+        {
+            Real = real;
+            Imaginary = imaginary;
+        }
+
+        public static ComplexNumber operator +(ComplexNumber a, ComplexNumber b)
+            => new ComplexNumber(a.Real + b.Real, a.Imaginary + b.Imaginary);
+
+        public static ComplexNumber operator *(ComplexNumber a, ComplexNumber b)
+            => new ComplexNumber(a.Real * b.Real - a.Imaginary * b.Imaginary,
+                               a.Real * b.Imaginary + a.Imaginary * b.Real);
+
+        public override string ToString() => $"{Real} + {Imaginary}i";
+    }
+
+    class Engine
+    {
+        public int HorsePower { get; set; }
+
+        public Engine(int hp) => HorsePower = hp;
+    }
+
+    class Car
+    {
+        public string Make { get; set; }
+        public string Model { get; set; }
+        public Engine Engine { get; set; }
+
+        public Car(string make, string model, Engine engine)
+        {
+            Make = make;
+            Model = model;
+            Engine = engine;
+        }
+
+        public void Start() => Console.WriteLine($"{Make} {Model} завелся");
+
+        public void DisplayInfo() => Console.WriteLine($"{Make} {Model}, {Engine.HorsePower} л.с.");
+    }
+
+    class ShoppingList
+    {
+        private string[] items = new string[10];
+
+        public string this[int index]
+        {
+            get => items[index];
+            set => items[index] = value;
+        }
+    }
+
+    class Calculator
+    {
+        public double Divide(double a, double b)
+        {
+            if (b == 0)
+                throw new DivideByZeroException("Деление на ноль невозможно");
+            return a / b;
+        }
+    }
+}
