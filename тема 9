@@ -1,0 +1,218 @@
+using System;
+using System.IO;
+using System.Linq;
+
+namespace ConsoleApp13
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Тема 9: Файлы");
+                Console.WriteLine("1.  Запись текста в файл");
+                Console.WriteLine("2.  Чтение текста из файла");
+                Console.WriteLine("3.  Построчное чтение файла");
+                Console.WriteLine("4.  Подсчет количества строк");
+                Console.WriteLine("5.  Добавление текста в существующий файл");
+                Console.WriteLine("6.  Копирование содержимого файла");
+                Console.WriteLine("7.  Поиск слова в файле");
+                Console.WriteLine("8.  Запись массива в файл");
+                Console.WriteLine("9.  Чтение чисел из файла в массив");
+                Console.WriteLine("10. Статистика текстового файла");
+                Console.WriteLine("0.  Выход");
+                Console.Write("\nВыберите задание (0-10): ");
+
+                if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 0 || choice > 10)
+                {
+                    Console.WriteLine("Неверный ввод!");
+                    Pause();
+                    continue;
+                }
+
+                if (choice == 0) break;
+
+                Console.Clear();
+                ExecuteTask(choice);
+                Pause();
+            }
+        }
+
+        static void ExecuteTask(int task)
+        {
+            switch (task)
+            {
+                case 1:
+                    using (StreamWriter writer = new StreamWriter("test1.txt"))
+                    {
+                        writer.WriteLine("Привет, мир!");
+                        writer.WriteLine("Это тестовая запись в файл.");
+                        writer.WriteLine("C# - мощный язык программирования.");
+                    }
+                    Console.WriteLine("Текст записан в файл test1.txt");
+                    break;
+
+                case 2:
+                    if (File.Exists("test1.txt"))
+                    {
+                        using (StreamReader reader = new StreamReader("test1.txt"))
+                        {
+                            string content = reader.ReadToEnd();
+                            Console.WriteLine("Содержимое файла:");
+                            Console.WriteLine(content);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Файл test1.txt не существует");
+                    }
+                    break;
+
+                case 3:
+                    if (File.Exists("test1.txt"))
+                    {
+                        using (StreamReader reader = new StreamReader("test1.txt"))
+                        {
+                            string line;
+                            int lineNumber = 1;
+                            while ((line = reader.ReadLine()) != null)
+                            {
+                                Console.WriteLine($"{lineNumber}: {line}");
+                                lineNumber++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Файл test1.txt не существует");
+                    }
+                    break;
+
+                case 4:
+                    if (File.Exists("test1.txt"))
+                    {
+                        int lineCount = File.ReadAllLines("test1.txt").Length;
+                        Console.WriteLine($"Количество строк в файле: {lineCount}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Файл test1.txt не существует");
+                    }
+                    break;
+
+                case 5:
+                    using (StreamWriter writer = new StreamWriter("test5.txt", true))
+                    {
+                        writer.WriteLine("Новая строка, добавленная в конец файла");
+                        writer.WriteLine($"Текущее время: {DateTime.Now}");
+                    }
+                    Console.WriteLine("Текст добавлен в файл test5.txt");
+                    break;
+
+                case 6:
+                    if (File.Exists("test1.txt"))
+                    {
+                        File.Copy("test1.txt", "test1_copy.txt", true);
+                        Console.WriteLine("Файл скопирован в test1_copy.txt");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Исходный файл не существует");
+                    }
+                    break;
+
+                case 7:
+                    if (File.Exists("test1.txt"))
+                    {
+                        Console.Write("Введите слово для поиска: ");
+                        string searchWord = Console.ReadLine();
+                        
+                        string[] lines = File.ReadAllLines("test1.txt");
+                        int foundCount = 0;
+                        
+                        for (int i = 0; i < lines.Length; i++)
+                        {
+                            if (lines[i].ToLower().Contains(searchWord.ToLower()))
+                            {
+                                Console.WriteLine($"Строка {i + 1}: {lines[i]}");
+                                foundCount++;
+                            }
+                        }
+                        Console.WriteLine($"Найдено совпадений: {foundCount}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Файл test1.txt не существует");
+                    }
+                    break;
+
+                case 8:
+                    string[] array = { "Яблоко", "Банан", "Апельсин", "Груша", "Виноград" };
+                    using (StreamWriter writer = new StreamWriter("array.txt"))
+                    {
+                        foreach (string item in array)
+                        {
+                            writer.WriteLine(item);
+                        }
+                    }
+                    Console.WriteLine("Массив записан в файл array.txt");
+                    break;
+
+                case 9:
+                    using (StreamWriter writer = new StreamWriter("numbers.txt"))
+                    {
+                        Random random = new Random();
+                        for (int i = 0; i < 10; i++)
+                        {
+                            writer.WriteLine(random.Next(1, 101));
+                        }
+                    }
+                    
+                    string[] numberLines = File.ReadAllLines("numbers.txt");
+                    int[] numbers = new int[numberLines.Length];
+                    
+                    for (int i = 0; i < numberLines.Length; i++)
+                    {
+                        numbers[i] = int.Parse(numberLines[i]);
+                    }
+                    
+                    Console.WriteLine("Числа из файла:");
+                    foreach (int num in numbers)
+                    {
+                        Console.Write(num + " ");
+                    }
+                    Console.WriteLine($"\nСумма: {numbers.Sum()}");
+                    break;
+
+                case 10:
+                    if (File.Exists("test1.txt"))
+                    {
+                        string text = File.ReadAllText("test1.txt");
+                        int charCount = text.Length;
+                        int lineCount = File.ReadAllLines("test1.txt").Length;
+                        int wordCount = text.Split(new char[] { ' ', '\n', '\r', '\t' }, 
+                                                 StringSplitOptions.RemoveEmptyEntries).Length;
+                        
+                        Console.WriteLine("Статистика файла:");
+                        Console.WriteLine($"Строк: {lineCount}");
+                        Console.WriteLine($"Слов: {wordCount}");
+                        Console.WriteLine($"Символов: {charCount}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Файл test1.txt не существует");
+                    }
+                    break;
+            }
+            Console.WriteLine();
+        }
+
+        static void Pause()
+        {
+            Console.WriteLine("\nНажмите любую клавишу для возврата в меню...");
+            Console.ReadKey();
+        }
+    }
+}
