@@ -1,0 +1,264 @@
+using System;
+using System.Linq;
+
+namespace ConsoleApp13
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Тема 6: Рекурсия");
+                Console.WriteLine("1.  Факториал (рекурсивный)");
+                Console.WriteLine("2.  Числа Фибоначчи (рекурсивные)");
+                Console.WriteLine("3.  Сумма цифр числа (рекурсивная)");
+                Console.WriteLine("4.  Степень числа (рекурсивная)");
+                Console.WriteLine("5.  НОД (рекурсивный алгоритм Евклида)");
+                Console.WriteLine("6.  Переворот строки (рекурсивный)");
+                Console.WriteLine("7.  Бинарный поиск (рекурсивный)");
+                Console.WriteLine("8.  Сумма элементов массива (рекурсивная)");
+                Console.WriteLine("9.  Ханойские башни");
+                Console.WriteLine("10. Проверка палиндрома (рекурсивная)");
+                Console.WriteLine("0.  Выход");
+                Console.Write("\nВыберите задание (0-10): ");
+
+                if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 0 || choice > 10)
+                {
+                    Console.WriteLine("Неверный ввод!");
+                    Pause();
+                    continue;
+                }
+
+                if (choice == 0) break;
+
+                Console.Clear();
+                ExecuteTask(choice);
+                Pause();
+            }
+        }
+
+        static void ExecuteTask(int task)
+        {
+            Random random = new Random();
+            
+            switch (task)
+            {
+                case 1:
+                    // Рекурсивный факториал
+                    Console.Write("Введите число для вычисления факториала: ");
+                    int n1 = int.Parse(Console.ReadLine());
+                    
+                    long factorial = RecursiveFactorial(n1);
+                    Console.WriteLine($"{n1}! = {factorial}");
+                    break;
+
+                case 2:
+                    // Рекурсивные числа Фибоначчи
+                    Console.Write("Введите количество чисел Фибоначчи: ");
+                    int n2 = int.Parse(Console.ReadLine());
+                    
+                    Console.WriteLine($"Первые {n2} чисел Фибоначчи:");
+                    for (int i = 0; i < n2; i++)
+                    {
+                        Console.Write(RecursiveFibonacci(i) + " ");
+                    }
+                    break;
+
+                case 3:
+                    // Рекурсивная сумма цифр числа
+                    Console.Write("Введите число: ");
+                    int n3 = int.Parse(Console.ReadLine());
+                    
+                    int sumDigits = RecursiveSumDigits(n3);
+                    Console.WriteLine($"Сумма цифр числа {n3} = {sumDigits}");
+                    break;
+
+                case 4:
+                    // Рекурсивное возведение в степень
+                    Console.Write("Введите основание: ");
+                    double baseNum = double.Parse(Console.ReadLine());
+                    Console.Write("Введите показатель степени: ");
+                    int exponent = int.Parse(Console.ReadLine());
+                    
+                    double power = RecursivePower(baseNum, exponent);
+                    Console.WriteLine($"{baseNum}^{exponent} = {power}");
+                    break;
+
+                case 5:
+                    // Рекурсивный НОД (алгоритм Евклида)
+                    Console.Write("Введите первое число: ");
+                    int a5 = int.Parse(Console.ReadLine());
+                    Console.Write("Введите второе число: ");
+                    int b5 = int.Parse(Console.ReadLine());
+                    
+                    int gcd = RecursiveGCD(a5, b5);
+                    Console.WriteLine($"НОД({a5}, {b5}) = {gcd}");
+                    break;
+
+                case 6:
+                    // Рекурсивный переворот строки
+                    Console.Write("Введите строку: ");
+                    string text6 = Console.ReadLine();
+                    
+                    string reversed = RecursiveReverse(text6);
+                    Console.WriteLine($"Перевернутая строка: {reversed}");
+                    break;
+
+                case 7:
+                    // Рекурсивный бинарный поиск
+                    int[] array7 = { 2, 5, 8, 12, 16, 23, 38, 45, 67, 89 };
+                    Console.WriteLine("Отсортированный массив:");
+                    foreach (int num in array7)
+                    {
+                        Console.Write(num + " ");
+                    }
+                    
+                    Console.Write("\nВведите элемент для поиска: ");
+                    int target = int.Parse(Console.ReadLine());
+                    
+                    int index = RecursiveBinarySearch(array7, target, 0, array7.Length - 1);
+                    if (index != -1)
+                        Console.WriteLine($"Элемент найден на позиции {index}");
+                    else
+                        Console.WriteLine("Элемент не найден");
+                    break;
+
+                case 8:
+                    // Рекурсивная сумма элементов массива
+                    int[] array8 = new int[8];
+                    Console.WriteLine("Массив:");
+                    for (int i = 0; i < array8.Length; i++)
+                    {
+                        array8[i] = random.Next(1, 21);
+                        Console.Write(array8[i] + " ");
+                    }
+                    
+                    int sumArray = RecursiveArraySum(array8, array8.Length - 1);
+                    Console.WriteLine($"\nСумма элементов массива: {sumArray}");
+                    break;
+
+                case 9:
+                    // Ханойские башни
+                    Console.Write("Введите количество дисков: ");
+                    int disks = int.Parse(Console.ReadLine());
+                    
+                    Console.WriteLine($"Последовательность перемещений для {disks} дисков:");
+                    RecursiveHanoiTowers(disks, 'A', 'C', 'B');
+                    break;
+
+                case 10:
+                    // Рекурсивная проверка палиндрома
+                    Console.Write("Введите строку для проверки: ");
+                    string text10 = Console.ReadLine();
+                    
+                    bool isPalindrome = RecursiveIsPalindrome(text10, 0, text10.Length - 1);
+                    Console.WriteLine($"Строка \"{text10}\" {(isPalindrome ? "является" : "не является")} палиндромом");
+                    break;
+            }
+            Console.WriteLine();
+        }
+
+        // Метод для case 1: рекурсивный факториал
+        static long RecursiveFactorial(int n)
+        {
+            if (n < 0) return -1; // Ошибка
+            if (n == 0 || n == 1) return 1; // Базовый случай
+            return n * RecursiveFactorial(n - 1); // Рекурсивный вызов
+        }
+
+        // Метод для case 2: рекурсивные числа Фибоначчи
+        static int RecursiveFibonacci(int n)
+        {
+            if (n < 0) return 0; // Ошибка
+            if (n == 0) return 0; // Базовый случай 1
+            if (n == 1) return 1; // Базовый случай 2
+            return RecursiveFibonacci(n - 1) + RecursiveFibonacci(n - 2); // Рекурсивный вызов
+        }
+
+        // Метод для case 3: рекурсивная сумма цифр
+        static int RecursiveSumDigits(int n)
+        {
+            if (n == 0) return 0; // Базовый случай
+            return (n % 10) + RecursiveSumDigits(n / 10); // Последняя цифра + рекурсия для остальных
+        }
+
+        // Метод для case 4: рекурсивное возведение в степень
+        static double RecursivePower(double baseNum, int exponent)
+        {
+            if (exponent == 0) return 1; // Базовый случай
+            if (exponent < 0) return 1 / RecursivePower(baseNum, -exponent); // Отрицательная степень
+            return baseNum * RecursivePower(baseNum, exponent - 1); // Рекурсивный вызов
+        }
+
+        // Метод для case 5: рекурсивный НОД (алгоритм Евклида)
+        static int RecursiveGCD(int a, int b)
+        {
+            if (b == 0) return Math.Abs(a); // Базовый случай
+            return RecursiveGCD(b, a % b); // Рекурсивный вызов
+        }
+
+        // Метод для case 6: рекурсивный переворот строки
+        static string RecursiveReverse(string text)
+        {
+            if (string.IsNullOrEmpty(text) || text.Length == 1) 
+                return text; // Базовый случай
+            
+            return RecursiveReverse(text.Substring(1)) + text[0]; // Рекурсивный вызов
+        }
+
+        // Метод для case 7: рекурсивный бинарный поиск
+        static int RecursiveBinarySearch(int[] array, int target, int left, int right)
+        {
+            if (left > right) return -1; // Базовый случай - не найден
+            
+            int mid = left + (right - left) / 2;
+            
+            if (array[mid] == target) 
+                return mid; // Базовый случай - найден
+            else if (array[mid] > target)
+                return RecursiveBinarySearch(array, target, left, mid - 1); // Поиск в левой половине
+            else
+                return RecursiveBinarySearch(array, target, mid + 1, right); // Поиск в правой половине
+        }
+
+        // Метод для case 8: рекурсивная сумма элементов массива
+        static int RecursiveArraySum(int[] array, int index)
+        {
+            if (index < 0) return 0; // Базовый случай
+            return array[index] + RecursiveArraySum(array, index - 1); // Текущий элемент + рекурсия
+        }
+
+        // Метод для case 9: Ханойские башни
+        static void RecursiveHanoiTowers(int n, char from, char to, char aux)
+        {
+            if (n == 1)
+            {
+                Console.WriteLine($"Переместить диск 1 с {from} на {to}");
+                return;
+            }
+            
+            RecursiveHanoiTowers(n - 1, from, aux, to);
+            Console.WriteLine($"Переместить диск {n} с {from} на {to}");
+            RecursiveHanoiTowers(n - 1, aux, to, from);
+        }
+
+        // Метод для case 10: рекурсивная проверка палиндрома
+        static bool RecursiveIsPalindrome(string text, int left, int right)
+        {
+            // Базовые случаи
+            if (left >= right) return true;
+            if (text[left] != text[right]) return false;
+            
+            // Рекурсивный вызов для следующих символов
+            return RecursiveIsPalindrome(text, left + 1, right - 1);
+        }
+
+        static void Pause()
+        {
+            Console.WriteLine("\nНажмите любую клавишу для возврата в меню...");
+            Console.ReadKey();
+        }
+    }
+}
