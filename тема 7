@@ -1,0 +1,371 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ConsoleApp13
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Тема 7: Алгоритмы");
+                Console.WriteLine("1.  Сортировка выбором");
+                Console.WriteLine("2.  Сортировка вставками");
+                Console.WriteLine("3.  Быстрая сортировка");
+                Console.WriteLine("4.  Сортировка слиянием");
+                Console.WriteLine("5.  Линейный поиск");
+                Console.WriteLine("6.  Бинарный поиск (итеративный)");
+                Console.WriteLine("7.  Поиск минимума и максимума");
+                Console.WriteLine("8.  Решето Эратосфена");
+                Console.WriteLine("9.  Проверка на анаграмму");
+                Console.WriteLine("10. Алгоритм Кадане");
+                Console.WriteLine("11. Поиск повторяющихся элементов");
+                Console.WriteLine("0.  Выход");
+                Console.Write("\nВыберите задание (0-11): ");
+
+                if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 0 || choice > 11)
+                {
+                    Console.WriteLine("Неверный ввод!");
+                    Pause();
+                    continue;
+                }
+
+                if (choice == 0) break;
+
+                Console.Clear();
+                ExecuteTask(choice);
+                Pause();
+            }
+        }
+
+        static void ExecuteTask(int task)
+        {
+            Random random = new Random();
+            
+            switch (task)
+            {
+                case 1:
+                    int[] arr1 = GenerateRandomArray(8);
+                    Console.WriteLine("Исходный массив:");
+                    PrintArray(arr1);
+                    
+                    for (int i = 0; i < arr1.Length - 1; i++)
+                    {
+                        int minIndex = i;
+                        for (int j = i + 1; j < arr1.Length; j++)
+                        {
+                            if (arr1[j] < arr1[minIndex])
+                                minIndex = j;
+                        }
+                        int temp = arr1[i];
+                        arr1[i] = arr1[minIndex];
+                        arr1[minIndex] = temp;
+                    }
+                    
+                    Console.WriteLine("После сортировки выбором:");
+                    PrintArray(arr1);
+                    break;
+
+                case 2:
+                    int[] arr2 = GenerateRandomArray(8);
+                    Console.WriteLine("Исходный массив:");
+                    PrintArray(arr2);
+                    
+                    for (int i = 1; i < arr2.Length; i++)
+                    {
+                        int key = arr2[i];
+                        int j = i - 1;
+                        while (j >= 0 && arr2[j] > key)
+                        {
+                            arr2[j + 1] = arr2[j];
+                            j--;
+                        }
+                        arr2[j + 1] = key;
+                    }
+                    
+                    Console.WriteLine("После сортировки вставками:");
+                    PrintArray(arr2);
+                    break;
+
+                case 3:
+                    int[] arr3 = GenerateRandomArray(10);
+                    Console.WriteLine("Исходный массив:");
+                    PrintArray(arr3);
+                    
+                    QuickSort(arr3, 0, arr3.Length - 1);
+                    
+                    Console.WriteLine("После быстрой сортировки:");
+                    PrintArray(arr3);
+                    break;
+
+                case 4:
+                    int[] arr4 = GenerateRandomArray(10);
+                    Console.WriteLine("Исходный массив:");
+                    PrintArray(arr4);
+                    
+                    MergeSort(arr4, 0, arr4.Length - 1);
+                    
+                    Console.WriteLine("После сортировки слиянием:");
+                    PrintArray(arr4);
+                    break;
+
+                case 5:
+                    int[] arr5 = GenerateRandomArray(10);
+                    Console.WriteLine("Массив:");
+                    PrintArray(arr5);
+                    
+                    Console.Write("Введите элемент для поиска: ");
+                    int target5 = int.Parse(Console.ReadLine());
+                    
+                    int index5 = -1;
+                    for (int i = 0; i < arr5.Length; i++)
+                    {
+                        if (arr5[i] == target5)
+                        {
+                            index5 = i;
+                            break;
+                        }
+                    }
+                    
+                    if (index5 != -1)
+                        Console.WriteLine($"Элемент найден на позиции {index5}");
+                    else
+                        Console.WriteLine("Элемент не найден");
+                    break;
+
+                case 6:
+                    int[] arr6 = { 2, 5, 8, 12, 16, 23, 38, 45, 67, 89 };
+                    Console.WriteLine("Отсортированный массив:");
+                    PrintArray(arr6);
+                    
+                    Console.Write("Введите элемент для поиска: ");
+                    int target6 = int.Parse(Console.ReadLine());
+                    
+                    int left = 0, right = arr6.Length - 1;
+                    int index6 = -1;
+                    
+                    while (left <= right)
+                    {
+                        int mid = left + (right - left) / 2;
+                        if (arr6[mid] == target6)
+                        {
+                            index6 = mid;
+                            break;
+                        }
+                        else if (arr6[mid] < target6)
+                            left = mid + 1;
+                        else
+                            right = mid - 1;
+                    }
+                    
+                    if (index6 != -1)
+                        Console.WriteLine($"Элемент найден на позиции {index6}");
+                    else
+                        Console.WriteLine("Элемент не найден");
+                    break;
+
+                case 7:
+                    int[] arr7 = GenerateRandomArray(12);
+                    Console.WriteLine("Массив:");
+                    PrintArray(arr7);
+                    
+                    int min = arr7[0], max = arr7[0];
+                    for (int i = 1; i < arr7.Length; i++)
+                    {
+                        if (arr7[i] < min) min = arr7[i];
+                        if (arr7[i] > max) max = arr7[i];
+                    }
+                    
+                    Console.WriteLine($"Минимум: {min}, Максимум: {max}");
+                    break;
+
+                case 8:
+                    Console.Write("Введите предел для поиска простых чисел: ");
+                    int n8 = int.Parse(Console.ReadLine());
+                    
+                    bool[] isPrime = new bool[n8 + 1];
+                    for (int i = 2; i <= n8; i++)
+                        isPrime[i] = true;
+                    
+                    for (int i = 2; i * i <= n8; i++)
+                    {
+                        if (isPrime[i])
+                        {
+                            for (int j = i * i; j <= n8; j += i)
+                                isPrime[j] = false;
+                        }
+                    }
+                    
+                    Console.WriteLine($"Простые числа до {n8}:");
+                    for (int i = 2; i <= n8; i++)
+                    {
+                        if (isPrime[i])
+                            Console.Write(i + " ");
+                    }
+                    break;
+
+                case 9:
+                    Console.Write("Введите первую строку: ");
+                    string s1 = Console.ReadLine();
+                    Console.Write("Введите вторую строку: ");
+                    string s2 = Console.ReadLine();
+                    
+                    bool isAnagram = false;
+                    if (s1.Length == s2.Length)
+                    {
+                        char[] chars1 = s1.ToLower().ToCharArray();
+                        char[] chars2 = s2.ToLower().ToCharArray();
+                        Array.Sort(chars1);
+                        Array.Sort(chars2);
+                        isAnagram = new string(chars1) == new string(chars2);
+                    }
+                    
+                    Console.WriteLine($"Строки {(isAnagram ? "являются" : "не являются")} анаграммами");
+                    break;
+
+                case 10:
+                    int[] arr10 = { -2, 1, -3, 4, -1, 2, 1, -5, 4 };
+                    Console.WriteLine("Массив:");
+                    PrintArray(arr10);
+                    
+                    int maxSum = arr10[0];
+                    int currentSum = arr10[0];
+                    
+                    for (int i = 1; i < arr10.Length; i++)
+                    {
+                        currentSum = Math.Max(arr10[i], currentSum + arr10[i]);
+                        maxSum = Math.Max(maxSum, currentSum);
+                    }
+                    
+                    Console.WriteLine($"Максимальная сумма подпоследовательности: {maxSum}");
+                    break;
+
+                case 11:
+                    int[] arr11 = { 1, 2, 3, 4, 2, 5, 6, 3, 7, 8, 1 };
+                    Console.WriteLine("Массив:");
+                    PrintArray(arr11);
+                    
+                    Dictionary<int, int> frequency = new Dictionary<int, int>();
+                    List<int> duplicates = new List<int>();
+                    
+                    foreach (int num in arr11)
+                    {
+                        if (frequency.ContainsKey(num))
+                        {
+                            frequency[num]++;
+                            if (frequency[num] == 2)
+                                duplicates.Add(num);
+                        }
+                        else
+                        {
+                            frequency[num] = 1;
+                        }
+                    }
+                    
+                    Console.WriteLine("Повторяющиеся элементы: " + string.Join(" ", duplicates));
+                    break;
+            }
+            Console.WriteLine();
+        }
+
+        static void QuickSort(int[] arr, int low, int high)
+        {
+            if (low < high)
+            {
+                int pi = Partition(arr, low, high);
+                QuickSort(arr, low, pi - 1);
+                QuickSort(arr, pi + 1, high);
+            }
+        }
+
+        static int Partition(int[] arr, int low, int high)
+        {
+            int pivot = arr[high];
+            int i = low - 1;
+            
+            for (int j = low; j < high; j++)
+            {
+                if (arr[j] < pivot)
+                {
+                    i++;
+                    int temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+            
+            int temp2 = arr[i + 1];
+            arr[i + 1] = arr[high];
+            arr[high] = temp2;
+            return i + 1;
+        }
+
+        static void MergeSort(int[] arr, int left, int right)
+        {
+            if (left < right)
+            {
+                int mid = left + (right - left) / 2;
+                MergeSort(arr, left, mid);
+                MergeSort(arr, mid + 1, right);
+                Merge(arr, left, mid, right);
+            }
+        }
+
+        static void Merge(int[] arr, int left, int mid, int right)
+        {
+            int n1 = mid - left + 1;
+            int n2 = right - mid;
+            
+            int[] L = new int[n1];
+            int[] R = new int[n2];
+            
+            Array.Copy(arr, left, L, 0, n1);
+            Array.Copy(arr, mid + 1, R, 0, n2);
+            
+            int i = 0, j = 0, k = left;
+            
+            while (i < n1 && j < n2)
+            {
+                if (L[i] <= R[j])
+                    arr[k++] = L[i++];
+                else
+                    arr[k++] = R[j++];
+            }
+            
+            while (i < n1)
+                arr[k++] = L[i++];
+            
+            while (j < n2)
+                arr[k++] = R[j++];
+        }
+
+        static int[] GenerateRandomArray(int size)
+        {
+            Random random = new Random();
+            int[] arr = new int[size];
+            for (int i = 0; i < size; i++)
+            {
+                arr[i] = random.Next(1, 51);
+            }
+            return arr;
+        }
+
+        static void PrintArray(int[] arr)
+        {
+            foreach (int num in arr)
+            {
+                Console.Write(num + " ");
+            }
+            Console.WriteLine();
+        }
+
+        static void Pause()
+        {
+            Console.WriteLine("\nНажмите любую клавишу для возврата в меню...");
+            Console.ReadKey();
+        }
+    }
+}
